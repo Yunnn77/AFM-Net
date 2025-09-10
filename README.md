@@ -48,3 +48,8 @@ A multi-scale fusion strategy enhances cross-branch feature integration, and a M
 ```bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
+2. Create a Python virtual environment and install dependencies:
+```bash
+conda create -n afm-net python=3.8 -y
+conda activate afm-net
+pip install -r requirements.txt
