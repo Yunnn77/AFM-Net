@@ -7,9 +7,10 @@ AFM-Net: Advanced Fusing Hierarchical CNN Visual Priors with Global Sequence Mod
 <h1 align="center">AFM-Net: Advanced Fusion Model Network</h1>
 
 <p align="center">
-  <strong>Authors:</strong> Yuanhao Tang & Zhengpei Hu <br>
-  <a href="https://github.com/tangyuanhao-qhu/AFM-Net">GitHub Repository</a> |
-  <a href="#citation">Citation</a>
+  <strong>Authors:</strong><br>
+  Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)<br>
+  Junliang Xing (Senior Member, IEEE)<br>
+  Chengkun Zhang, Jianqiang Huang (Member, IEEE)
 </p>
 
 ---
