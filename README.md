@@ -45,6 +45,7 @@ pip install -r requirements.txt
 ```
 ### 3.Prepare datasets
 The expected folder structure for AID dataset is as follows:
+```
 AID/
 ├── Airport/
 │   ├── img1.jpg
@@ -54,6 +55,7 @@ AID/
 │   ├── img1.jpg
 │   └── ...
 ├── ...
+```
 Other datasets (NWPU-RESISC45, UC Merced) should follow a similar class-wise folder organization.
 
 ## Usage 🚀
