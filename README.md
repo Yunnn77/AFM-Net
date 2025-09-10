@@ -33,17 +33,16 @@ Extensive experiments show AFM-Net achieves state-of-the-art performance on AID,
 
 ## Installation ⚙️
 ### Clone this repository:
-```Bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
 ### Create a Python virtual environment and install dependencies:
 conda create -n afm-net python=3.8 -y
 conda activate afm-net
 pip install -r requirements.txt
-🚀 Usage
-🔹 Training
+## Usage 🚀
+Training 🔹 
 python train.py --dataset AID --batch_size 32 --epochs 100
-📊 Results
+## Results 📊 
 Dataset
 OA (%)
 Improvement
@@ -56,7 +55,7 @@ NWPU-RESISC45
 UC Merced
 96.92
 +1.37
-📖 Citation
+## Citation 📖 
 If you use AFM-Net in your research, please cite our paper:
 @article{tang2025afmnet,
   title={AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification},
@@ -64,13 +63,10 @@ If you use AFM-Net in your research, please cite our paper:
   journal={arXiv preprint arXiv:XXXX.XXXXX},
   year={2025}
 }
-👨‍💻 Authors
-	•	Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)
-	•	Junliang Xing (Senior Member, IEEE)
-	•	Chengkun Zhang, Jianqiang Huang (Member, IEEE)
-📌 License
-
-This project is released under the MIT License.
+## Authors 👨‍💻 
+* Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)
+* Junliang Xing (Senior Member, IEEE)
+* Chengkun Zhang, Jianqiang Huang (Member, IEEE)
 
 
 
