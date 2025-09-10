@@ -52,10 +52,14 @@ cd AFM-Net
 conda create -n afm-net python=3.8 -y
 conda activate afm-net
 pip install -r requirements.txt
-3. Usage
-Training
-python train.py --dataset AID --batch_size 32 --epochs 500
-4. Citation
+## Usage
+
+### Training
+- `python train.py --dataset AID --batch_size 32 --epochs 100`
+
+
+
+## Citation
 @article{tang2025afmnet,
   title={AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification},
   author={Tang, Yuanhao and Hu, Zhengpei and Xing, Junliang and Zhang, Chengkun and Huang, Jianqiang},
