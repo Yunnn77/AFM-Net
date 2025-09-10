@@ -1,3 +1,5 @@
+![AFM-Net Logo](docs/logo.png)
+
 # AFM-Net: Advanced Fusion Model Network
 
 ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -5,15 +7,12 @@
 ![PyTorch Version](https://img.shields.io/badge/PyTorch-1.12%2B-orange)
 
 **Authors:**  
-Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)  
-Junliang Xing (Senior Member, IEEE)  
+Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE),  
+Junliang Xing (Senior Member, IEEE),  
 Chengkun Zhang, Jianqiang Huang (Member, IEEE)  
 
 GitHub Repository: [https://github.com/tangyuanhao-qhu/AFM-Net](https://github.com/tangyuanhao-qhu/AFM-Net)
 
----
-
-## Overview
 AFM-Net is a dual-branch framework for **remote sensing scene classification** of high-resolution images. It combines the hierarchical visual priors of a CNN backbone with the global sequence modeling capability of Vision Mamba. A multi-scale fusion strategy enhances cross-branch feature integration, and a Mixture-of-Experts (MoE) classifier adaptively aggregates the most informative features.
 
 **Key Features:**
@@ -25,12 +24,9 @@ AFM-Net is a dual-branch framework for **remote sensing scene classification** o
   - NWPU-RESISC45
   - UC Merced
 
----
+Model architecture:
 
-## Model Architecture
 ![AFM-Net Architecture](docs/AFM-Net_architecture.png)
-
----
 
 ## Installation
 
