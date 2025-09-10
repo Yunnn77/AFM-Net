@@ -13,7 +13,7 @@
 
 ---
 
-##  Introduction 🔍 
+##  🔍 Introduction 
 
 Remote sensing scene classification of high-resolution images remains a challenging task due to the complex spatial structures and multi-scale characteristics of objects.
 We propose AFM-Net (Advanced Fusion Model Network), a dual-branch framework that:
@@ -25,13 +25,13 @@ Extensive experiments show AFM-Net achieves state-of-the-art performance on AID,
 
 ---
 
-## Model Architecture 📐 
+##  📐 Model Architecture
 
 <p align="center">
   <img src="docs/fig1.png" alt="AFM-Net Architecture" width="700"/>
 </p>
 
-## Installation ⚙️
+## ⚙️Installation 
 ### 1.Clone this repository:
 ```bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
@@ -58,12 +58,12 @@ AID/
 ```
 Other datasets (NWPU-RESISC45, UC Merced) should follow a similar class-wise folder organization.
 
-## Usage 🚀
-Training 🔹 
+## 🚀Usage 
+🔹 Training 
  ```bash
 python train.py --dataset AID --batch_size 32 --epochs 500
  ```
-## Performance Comparison 🔥 
+## 🔥 Performance Comparison 
 | Model                      | Param (M) | UC Merced (F1) | AID (F1) | NWPU (F1) |
 | :------------------------- | :-------: | :-------------: | :------: | :-------: |
 | **CNN-based Models**       |           |                 |          |           |
@@ -92,7 +92,10 @@ python train.py --dataset AID --batch_size 32 --epochs 500
 | HC-Mamba-B                 | 32.8      | 95.34           | 92.86    | 95.25     |
 | **Ours (AFM-Net)**         | **45.5**  | **96.81**       | **93.71**| **95.52** |
 
-## Citation 📖 
+##  🎯Model Visualizations (CAM)
+These figures visualize where AFM-Net focuses on each scene using Class Activation Maps (CAM).
+
+## 📖 Citation 
 If you use AFM-Net in your research, please cite our paper:
 ```bibtex
 @article{tang2025afmnet,
@@ -102,7 +105,7 @@ If you use AFM-Net in your research, please cite our paper:
   year={2025}
 }
 ```
-## Authors 👨‍💻 
+## 👨‍💻 Authors 
 * Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)
 * Junliang Xing (Senior Member, IEEE)
 * Chengkun Zhang, Jianqiang Huang (Member, IEEE)
