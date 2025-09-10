@@ -32,21 +32,34 @@ Extensive experiments show AFM-Net achieves state-of-the-art performance on AID,
 </p>
 
 ## Installation ⚙️
-### Clone this repository:
+### 1.Clone this repository:
 ```bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
 ```
-### Create a Python virtual environment and install dependencies:
+### 2.Create a Python virtual environment and install dependencies:
 ```bash
 conda create -n afm-net python=3.8 -y
 conda activate afm-net
 pip install -r requirements.txt
 ```
+### 3.Prepare datasets
+The expected folder structure for AID dataset is as follows:
+AID/
+├── Airport/
+│   ├── img1.jpg
+│   ├── img2.jpg
+│   └── ...
+├── Beach/
+│   ├── img1.jpg
+│   └── ...
+├── ...
+Other datasets (NWPU-RESISC45, UC Merced) should follow a similar class-wise folder organization.
+
 ## Usage 🚀
 Training 🔹 
  ```bash
-python train.py --dataset AID --batch_size 32 --epochs 100
+python train.py --dataset AID --batch_size 32 --epochs 500
  ```
 ## Performance Comparison 🔥 
 | Model                      | Param (M) | UC Merced (F1) | AID (F1) | NWPU (F1) |
