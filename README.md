@@ -33,15 +33,21 @@ Extensive experiments show AFM-Net achieves state-of-the-art performance on AID,
 
 ## Installation ⚙️
 ### Clone this repository:
+```bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
+```
 ### Create a Python virtual environment and install dependencies:
+```bash
 conda create -n afm-net python=3.8 -y
 conda activate afm-net
 pip install -r requirements.txt
+```
 ## Usage 🚀
 Training 🔹 
+ ```bash
 python train.py --dataset AID --batch_size 32 --epochs 100
+ ```
 ## Results 📊 
 Dataset
 OA (%)
