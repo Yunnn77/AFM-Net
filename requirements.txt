@@ -1,0 +1,34 @@
+# Core deep learning
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+torchaudio==2.5.1+cu121
+
+# Image processing
+opencv-python==4.11.0.86
+pillow==11.2.1
+
+# Scientific computing
+numpy==2.0.2
+scipy==1.13.1
+pandas==2.3.0
+
+# Machine learning utilities
+scikit-learn==1.6.1
+tqdm==4.65.2
+thop==0.1.1.post2209072238
+
+# Visualization
+matplotlib==3.9.4
+seaborn==0.13.2
+
+# Model training / utilities
+timm==0.9.12
+einops==0.8.1
+torch>=2.5.1
+transformers==4.52.4
+ttach==0.0.3
+grad-cam==1.5.5
+safetensors==0.5.3
+
+# YAML / config
+PyYAML==6.0.2
