@@ -48,7 +48,7 @@ Training 🔹
  ```bash
 python train.py --dataset AID --batch_size 32 --epochs 100
  ```
-## Benchmark Results 📊 
+## Performance Comparison 🔥 
 | Model                      | Param (M) | UC Merced (F1) | AID (F1) | NWPU (F1) |
 | :------------------------- | :-------: | :-------------: | :------: | :-------: |
 | **CNN-based Models**       |           |                 |          |           |
@@ -79,12 +79,14 @@ python train.py --dataset AID --batch_size 32 --epochs 100
 
 ## Citation 📖 
 If you use AFM-Net in your research, please cite our paper:
+```bibtex
 @article{tang2025afmnet,
   title={AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification},
   author={Tang, Yuanhao and Hu, Zhengpei and Xing, Junliang and Zhang, Chengkun and Huang, Jianqiang},
   journal={arXiv preprint arXiv:XXXX.XXXXX},
   year={2025}
 }
+```
 ## Authors 👨‍💻 
 * Yuanhao Tang, Zhengpei Hu (Graduate Student Member, IEEE)
 * Junliang Xing (Senior Member, IEEE)
