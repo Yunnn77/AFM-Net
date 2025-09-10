@@ -26,7 +26,7 @@ AFM-Net is a dual-branch framework for **remote sensing scene classification** o
 
 Model architecture:
 
-![AFM-Net Architecture](docs/AFM-Net_architecture.png)
+![AFM-Net Architecture](docs/fig1.png)
 
 ## Installation
 
