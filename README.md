@@ -17,9 +17,9 @@
 
 Remote sensing scene classification of high-resolution images remains a challenging task due to the complex spatial structures and multi-scale characteristics of objects.
 We propose AFM-Net (Advanced Fusion Model Network), a dual-branch framework that:
-	•	✅ Combines CNN backbone (local texture & hierarchical priors) with Vision Mamba (global sequence modeling).
-	•	✅ Employs a multi-scale fusion strategy for cross-branch feature integration.
-	•	✅ Uses a Mixture-of-Experts (MoE) classifier for adaptive feature aggregation.
+* ✅ Combines CNN backbone (local texture & hierarchical priors) with Vision Mamba (global sequence modeling).
+* ✅ Employs a multi-scale fusion strategy for cross-branch feature integration.
+* ✅ Uses a Mixture-of-Experts (MoE) classifier for adaptive feature aggregation.
 
 Extensive experiments show AFM-Net achieves state-of-the-art performance on AID, NWPU-RESISC45, and UC Merced datasets.
 
