@@ -1,0 +1,232 @@
+# datasets/aid_dataset.py
+import os
+from PIL import Image
+import torch
+from torch.utils.data import Dataset, DataLoader
+import json
+from sklearn.model_selection import train_test_split
+from torchvision import transforms
+
+class AIDDataset(Dataset):
+    def __init__(self, root_dir_not_used_anymore, image_paths, labels, transform=None, class_to_idx=None):
+        self.image_paths = image_paths
+        self.labels = labels
+        self.transform = transform
+        self.class_to_idx = class_to_idx
+
+    def __len__(self):
+        return len(self.image_paths)
+
+    def __getitem__(self, idx):
+        img_path = self.image_paths[idx]
+        try:
+            image = Image.open(img_path).convert('RGB')
+        except FileNotFoundError:
+            placeholder_image = Image.new('RGB', (224, 224), color='red')
+            return placeholder_image, torch.tensor(-1)
+
+        label = self.labels[idx]
+        if self.transform:
+            image = self.transform(image)
+        return image, torch.tensor(label, dtype=torch.long)
+
+
+def _load_paths_and_labels_from_dir(data_dir, class_to_idx):
+    image_paths = []
+    labels = []
+    if not os.path.isdir(data_dir):
+        return image_paths, labels
+
+    for class_name in class_to_idx.keys():
+        class_path = os.path.join(data_dir, class_name)
+        if os.path.isdir(class_path):
+            label_idx = class_to_idx[class_name]
+            for img_name in os.listdir(class_path):
+                if img_name.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff')):
+                    image_paths.append(os.path.join(class_path, img_name))
+                    labels.append(label_idx)
+    return image_paths, labels
+
+
+def get_aid_dataloaders(config: dict):
+    data_cfg = config['data']
+    aid_root_train_val = data_cfg.get('aid_data_root')
+    aid_root_test = data_cfg.get('aid_test_data_root', None)
+    img_size = data_cfg['img_size']
+    batch_size = data_cfg['batch_size']
+    val_batch_size = data_cfg['val_batch_size']
+    test_batch_size = data_cfg.get('test_batch_size', val_batch_size)
+    num_workers = data_cfg['num_workers']
+    val_split_ratio = data_cfg.get('val_split_ratio', 0.2)
+    random_state_split = config['training'].get('seed', 42)
+
+    if not aid_root_train_val or not os.path.isdir(aid_root_train_val):
+        raise ValueError(f"AID train/val data root '{aid_root_train_val}' is invalid.")
+
+    all_train_val_image_paths, all_train_val_labels = [], []
+    class_names = sorted(
+        [d for d in os.listdir(aid_root_train_val) if os.path.isdir(os.path.join(aid_root_train_val, d))])
+
+    if not class_names:
+        raise ValueError(f"No class subdirectories found in '{aid_root_train_val}'.")
+
+    class_to_idx = {cls_name: i for i, cls_name in enumerate(class_names)}
+
+    actual_num_classes = len(class_names)
+    if data_cfg.get('num_classes') != actual_num_classes:
+        print(f"Info: Inferred {actual_num_classes} classes from AID directory. Updating config.")
+        data_cfg['num_classes'] = actual_num_classes
+        if 'model' in config and 'params' in config['model']:
+            config['model']['params']['num_classes'] = actual_num_classes
+
+    print(f"Loading AID train/val data. Found {actual_num_classes} classes.")
+
+    for class_name in class_names:
+        class_dir = os.path.join(aid_root_train_val, class_name)
+        label_idx = class_to_idx[class_name]
+        for img_name in os.listdir(class_dir):
+            if img_name.lower().endswith(('.png', '.jpg', '.jpeg')):
+                all_train_val_image_paths.append(os.path.join(class_dir, img_name))
+                all_train_val_labels.append(label_idx)
+
+    if not all_train_val_image_paths:
+        raise ValueError(f"No image files found in '{aid_root_train_val}'.")
+
+    train_paths, val_paths, train_labels, val_labels = train_test_split(
+        all_train_val_image_paths, all_train_val_labels,
+        test_size=val_split_ratio,
+        random_state=random_state_split,
+        stratify=all_train_val_labels
+    )
+
+    mean_aid_0_1 = [101.02608706 / 255.0, 103.9996994 / 255.0, 93.50157708 / 255.0]
+    std_aid_0_1 = [40.36728927 / 255.0, 37.11132278 / 255.0, 35.90649976 / 255.0]
+
+    train_transform = transforms.Compose([
+        transforms.Resize((img_size, img_size)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomVerticalFlip(),
+        transforms.RandomRotation(30),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=mean_aid_0_1, std=std_aid_0_1)
+    ])
+
+    eval_transform = transforms.Compose([
+        transforms.Resize((img_size, img_size)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=mean_aid_0_1, std=std_aid_0_1)
+    ])
+
+    train_dataset = AIDDataset(None, train_paths, train_labels, transform=train_transform, class_to_idx=class_to_idx)
+    val_dataset = AIDDataset(None, val_paths, val_labels, transform=eval_transform, class_to_idx=class_to_idx)
+
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers,
+                              pin_memory=True, drop_last=True)
+    val_loader = DataLoader(val_dataset, batch_size=val_batch_size, shuffle=False, num_workers=num_workers,
+                            pin_memory=True)
+
+    print(f"AID train loader: {len(train_loader)} batches, total {len(train_dataset)} samples.")
+    print(f"AID val loader: {len(val_loader)} batches, total {len(val_dataset)} samples.")
+
+    test_loader = None
+    test_image_paths, test_labels = [], []
+
+    if aid_root_test and os.path.isdir(aid_root_test):
+        print(f"Loading test data from '{aid_root_test}'...")
+        test_image_paths, test_labels = _load_paths_and_labels_from_dir(aid_root_test, class_to_idx)
+
+        if test_image_paths:
+            test_dataset = AIDDataset(None, test_image_paths, test_labels, transform=eval_transform,
+                                      class_to_idx=class_to_idx)
+            test_loader = DataLoader(test_dataset, batch_size=test_batch_size, shuffle=False, num_workers=num_workers,
+                                     pin_memory=True)
+            print(f"AID test loader: {len(test_loader)} batches, total {len(test_dataset)} samples.")
+        else:
+            print(f"Warning: No image files found in test directory '{aid_root_test}'.")
+    elif aid_root_test:
+        print(f"Warning: Configured test data directory '{aid_root_test}' is invalid.")
+
+    save_dir = config.get('dataset_split_save_dir', f'./dataset_splits/aid_split_{random_state_split}')
+    os.makedirs(save_dir, exist_ok=True)
+
+    for split_name, paths, labels in [('train', train_paths, train_labels),
+                                      ('val', val_paths, val_labels),
+                                      ('test', test_image_paths, test_labels)]:
+        if paths:
+            split_data = {
+                'image_paths': paths,
+                'labels': labels,
+                'class_names': class_names,
+                'class_to_idx': class_to_idx,
+                'sample_count': len(paths)
+            }
+            with open(os.path.join(save_dir, f'{split_name}_split.json'), 'w', encoding='utf-8') as f:
+                json.dump(split_data, f, ensure_ascii=False, indent=2)
+
+    print(f"AID dataset split saved to: {save_dir}")
+
+    data_cfg['class_names'] = class_names
+    data_cfg['class_to_idx'] = class_to_idx
+
+    return train_loader, val_loader, test_loader
+
+
+def get_aid_retrieval_loader(config, batch_size):
+
+    data_cfg = config['data']
+    aid_root_train_val = data_cfg.get('aid_data_root')
+    aid_root_test = data_cfg.get('aid_test_data_root', None)
+    img_size = data_cfg['img_size']
+    num_workers = data_cfg.get('num_workers', 4)
+    val_split_ratio = data_cfg.get('val_split_ratio', 0.2)
+    random_state_split = config['training'].get('seed', 42)
+
+    all_train_val_image_paths = []
+    all_train_val_labels = []
+    class_names = sorted(
+        [d for d in os.listdir(aid_root_train_val) if os.path.isdir(os.path.join(aid_root_train_val, d))])
+    class_to_idx = {cls_name: i for i, cls_name in enumerate(class_names)}
+    for class_name in class_names:
+        class_dir = os.path.join(aid_root_train_val, class_name)
+        label_idx = class_to_idx[class_name]
+        for img_name in os.listdir(class_dir):
+            if img_name.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff')):
+                all_train_val_image_paths.append(os.path.join(class_dir, img_name))
+                all_train_val_labels.append(label_idx)
+
+    _, val_paths, _, val_labels = train_test_split(
+        all_train_val_image_paths, all_train_val_labels,
+        test_size=val_split_ratio, random_state=random_state_split, stratify=all_train_val_labels
+    )
+
+    mean = data_cfg.get('normalize_mean', [0.485, 0.456, 0.406])
+    std = data_cfg.get('normalize_std', [0.229, 0.224, 0.225])
+    eval_transform = transforms.Compose([
+        transforms.Resize((img_size, img_size)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=mean, std=std)
+    ])
+
+    retrieval_dataset = None
+    if aid_root_test and os.path.isdir(aid_root_test):
+        print(f"Info: Using independent test set for retrieval from: {aid_root_test}")
+        test_image_paths, test_labels = _load_paths_and_labels_from_dir(aid_root_test, class_to_idx)
+        retrieval_dataset = AIDDataset(None, test_image_paths, test_labels, transform=eval_transform,
+                                       class_to_idx=class_to_idx)
+    elif val_paths:
+        print("Info: Using validation split for retrieval.")
+        retrieval_dataset = AIDDataset(None, val_paths, val_labels, transform=eval_transform, class_to_idx=class_to_idx)
+
+    if retrieval_dataset is None or len(retrieval_dataset) == 0:
+        return None, None
+
+    retrieval_loader = DataLoader(
+        retrieval_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+
+    return retrieval_loader, retrieval_dataset
