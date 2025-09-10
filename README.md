@@ -1,4 +1,4 @@
-AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification
+# AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification
 <p align="center">
   <img src="docs/logo.png" alt="AFM-Net Logo" width="200"/>
 </p>
@@ -13,7 +13,7 @@ AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification
 
 ---
 
-🔍 Introduction
+##  Introduction 🔍 
 
 Remote sensing scene classification of high-resolution images remains a challenging task due to the complex spatial structures and multi-scale characteristics of objects.
 We propose AFM-Net (Advanced Fusion Model Network), a dual-branch framework that:
@@ -25,20 +25,18 @@ Extensive experiments show AFM-Net achieves state-of-the-art performance on AID,
 
 ---
 
-📐 Model Architecture
+## Model Architecture 📐 
 
 <p align="center">
   <img src="docs/fig1.png" alt="AFM-Net Architecture" width="700"/>
 </p>
 
----
-
-⚙️ Installation
-
-	1.	Clone this repository:
+## Installation ⚙️
+### Clone this repository:
+```Bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
-	2.	Create a Python virtual environment and install dependencies:
+### Create a Python virtual environment and install dependencies:
 conda create -n afm-net python=3.8 -y
 conda activate afm-net
 pip install -r requirements.txt
