@@ -49,3 +49,20 @@ A multi-scale fusion strategy enhances cross-branch feature integration, and a M
 ```bash
 git clone https://github.com/tangyuanhao-qhu/AFM-Net.git
 cd AFM-Net
+2. Create a Python virtual environment and install dependencies:
+conda create -n afm-net python=3.8 -y
+conda activate afm-net
+pip install -r requirements.txt
+3. Usage
+python train.py --dataset AID --batch_size 32 --epochs 100
+
+Citation
+
+If you use this code for your research, please cite:
+@article{tang2025afmnet,
+  title={AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification},
+  author={Tang, Yuanhao and Hu, Zhengpei},
+  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  year={2025}
+}
+
