@@ -1,6 +1,6 @@
 # AFM-Net: Advanced Fusion Model Network for Remote Sensing Scene Classification
 <p align="center">
-  <img src="docs/logo1.png" alt="AFM-Net Logo" width="200"/>
+  <img src="docs/logo1.png" alt="AFM-Net Logo" width="600"/>
 </p>
 
 <h1 align="center">AFM-Net: Advanced Fusion Model Network</h1>
